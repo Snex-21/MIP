@@ -2,17 +2,17 @@ import shutil
 import uuid
 from pathlib import Path
 from typing import Tuple, Union, Optional
-from config import root_dir
+from config import temp_dir
 
-# carpeta base para almacenamiento temporal 
-TEMP_BASE_DIR = root_dir / "temp"
+# carpeta base para almacenamiento temporal
+TEMP_BASE_DIR = temp_dir
 
 
 class FileManager:
     """gestor de archivos temporales y sesiones de procesamiento"""
 
     def __init__(self, base_dir: Optional[Union[str, Path]] = None) -> None:
-        self.base_dir = Path(base_dir) if base_dir else TEMP_BASE_DIR
+        self.base_dir = Path(base_dir).resolve() if base_dir else TEMP_BASE_DIR
         self.base_dir.mkdir(parents=True, exist_ok=True)
 
     def create_session_dir(self) -> Tuple[str, Path]:

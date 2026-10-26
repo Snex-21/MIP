@@ -1,13 +1,14 @@
-import os
 from pathlib import Path
 from typing import Tuple, Union, Optional
 import mido
+
+from config import max_file_size_bytes
 
 # Extensiones permitidas 
 ALLOWED_EXTENSIONS = {".mid", ".midi"}
 
 # Límite máximo de tamaño de archivo
-MAX_FILE_SIZE_BYTES = 10 * 1024 * 1024  # 10 MB
+MAX_FILE_SIZE_BYTES = max_file_size_bytes
 
 
 class ValidationError(Exception):
@@ -86,14 +87,11 @@ class MIDIValidator:
             raise ValidationError(f"El archivo '{target_path}' no existe o no se especificó.")
 
         try:
-            # lectura e inspección con mido
             midi_file = mido.MidiFile(str(target_path))
             
-            # verificar si contiene pistas
             if not midi_file.tracks:
                 raise ValidationError("El archivo MIDI no contiene pistas (tracks).")
 
-            # verificar que contenga al menos un mensaje musical o de tiempo válido
             total_messages = sum(len(track) for track in midi_file.tracks)
             if total_messages == 0:
                 raise ValidationError("El archivo MIDI no contiene eventos ni mensajes musicales.")
