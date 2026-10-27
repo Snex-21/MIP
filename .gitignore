@@ -227,3 +227,7 @@ __marimo__/
 *.ogg
 prueba.py
 temp/
+
+# Sesiones de Pyrogram / Telegram
+*.session
+*.session-journal
